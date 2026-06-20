@@ -46,10 +46,12 @@ import HomeServices from './pages/HomeServices';
 import NoInternetConnection from './pages/NoInternetConnection';
 
 import ListProperty from './pages/ListProperty';
+import AppBanner from './components/AppBanner';
 
 export default function App() {
   return (
     <BrowserRouter>
+      <AppBanner />
       <Routes>
         <Route path="/" element={<Onboarding />} />
         <Route path="/auth" element={<Authentication />} />

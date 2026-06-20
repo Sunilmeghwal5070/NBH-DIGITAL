@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { auth, googleProvider } from '../lib/firebase';
-import { signInWithRedirect, getRedirectResult, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { motion } from 'motion/react';
 
 export default function Authentication() {
@@ -11,24 +11,6 @@ export default function Authentication() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Check for redirect result when the component mounts
-    const checkRedirect = async () => {
-      try {
-        setLoading(true);
-        const result = await getRedirectResult(auth);
-        if (result) {
-          navigate('/home', { replace: true });
-        }
-      } catch (err: any) {
-        console.error("Redirect Error:", err);
-        setError(err.message || 'Failed to sign in with Google');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    checkRedirect();
-
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         navigate('/home', { replace: true });
@@ -41,7 +23,8 @@ export default function Authentication() {
     setError('');
     setLoading(true);
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
+      // Wait for auth state change to trigger redirect
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'Failed to initialize Google sign in');
@@ -87,6 +70,12 @@ export default function Authentication() {
            <h2 className="text-xl font-bold text-gray-900 mb-6">Welcome!</h2>
            <p className="text-gray-500 mb-6 leading-relaxed font-medium">Please sign in to access personalized features, share updates, and participate in the community.</p>
            
+           <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-6">
+             <p className="text-xs text-blue-800 font-medium">
+               <strong>Note:</strong> If you are using an app wrapper or an in-app browser (like WhatsApp/Instagram), Google Login may be blocked. Please open this link directly in <strong>Chrome</strong> or <strong>Safari</strong>.
+             </p>
+           </div>
+
            {error && (
              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-red-50 text-red-600 p-3 rounded-xl mb-4 text-sm font-medium border border-red-100">
                {error}
