@@ -1,0 +1,6 @@
+{
+  "name": "Digital Nimbahera",
+  "description": "Digital ecosystem for Nimbahera city connecting residents with news, services, and local businesses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
