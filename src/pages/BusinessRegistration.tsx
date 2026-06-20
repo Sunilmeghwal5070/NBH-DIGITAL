@@ -1,7 +1,7 @@
 import { useSafeNavigate } from '../hooks/useSafeNavigate';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Plus, ChevronRight } from 'lucide-react';
+import { X, Plus, ChevronRight, MapPinned, Camera } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { motion, AnimatePresence } from 'motion/react';
@@ -16,6 +16,40 @@ export default function BusinessRegistration() {
   });
   const [showCategory, setShowCategory] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  const [images, setImages] = useState<string[]>([]);
+  const [location, setLocation] = useState('');
+  const [isLocating, setIsLocating] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const getLocation = () => {
+    setIsLocating(true);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation(`Lat: ${position.coords.latitude.toFixed(4)}, Lng: ${position.coords.longitude.toFixed(4)}`);
+          setIsLocating(false);
+        },
+        (error) => {
+          console.error("Error obtaining location", error);
+          alert("Could not get location. Check permissions.");
+          setIsLocating(false);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+      setIsLocating(false);
+    }
+  };
+
+  const handleImageCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const imgUrl = URL.createObjectURL(e.target.files[0]);
+      if (images.length < 3) {
+        setImages([...images, imgUrl]);
+      }
+    }
+  };
 
   const handleSubmit = async () => {
     if (!formData.name || !formData.category) return;
@@ -74,9 +108,22 @@ export default function BusinessRegistration() {
             {/* Images */}
             <div className="mb-6">
                <h3 className="text-sm font-bold text-gray-900 mb-3">Images (max 3)</h3>
-               <motion.div whileTap={{ scale: 0.95 }} className="w-24 h-24 bg-gray-50 border border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
-                  <Plus size={28} className="text-gray-400" />
-               </motion.div>
+               <div className="flex gap-2 overflow-x-auto pb-2">
+                 <AnimatePresence>
+                   {images.map((img, i) => (
+                     <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }} key={i} className="w-24 h-24 flex-shrink-0 relative rounded-xl overflow-hidden border border-gray-100">
+                        <img src={img} alt="captured" className="w-full h-full object-cover" />
+                     </motion.div>
+                   ))}
+                 </AnimatePresence>
+                 {images.length < 3 && (
+                   <motion.div onClick={() => fileInputRef.current?.click()} whileTap={{ scale: 0.95 }} className="w-24 h-24 flex-shrink-0 bg-gray-50 border border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
+                      <Camera size={24} className="text-gray-400 mb-1" />
+                      <span className="text-[10px] text-gray-500 font-medium">Add Photo</span>
+                   </motion.div>
+                 )}
+                 <input type="file" accept="image/*" capture="environment" className="hidden" ref={fileInputRef} onChange={handleImageCapture} />
+               </div>
             </div>
 
             {/* Form */}
@@ -103,6 +150,22 @@ export default function BusinessRegistration() {
                   />
                </div>
 
+               <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Location *</label>
+                  <div className="relative">
+                    <input 
+                       type="text" 
+                       placeholder="Enter business location"
+                       value={location}
+                       onChange={(e) => setLocation(e.target.value)}
+                       className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-4 pr-12 py-3.5 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition"
+                    />
+                    <button onClick={getLocation} className={`absolute right-2 top-2 p-2 rounded-lg transition ${isLocating ? 'text-blue-600 animate-pulse' : 'text-gray-400 hover:text-blue-600'}`}>
+                      <MapPinned size={18} />
+                    </button>
+                  </div>
+               </div>
+               
                <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Category *</label>
                   <div className="relative">

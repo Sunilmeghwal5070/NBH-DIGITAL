@@ -12,12 +12,12 @@ export default function MainLayout() {
   ];
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto relative overflow-hidden font-sans shadow-xl">
-      <div className="flex-grow overflow-y-auto pb-24 hide-scrollbar scroll-smooth">
+    <div className="flex flex-col h-[100dvh] bg-gray-50 max-w-md mx-auto relative overflow-hidden font-sans shadow-2xl sm:shadow-xl sm:border-x border-gray-200">
+      <div className="flex-grow overflow-y-auto pb-20 hide-scrollbar scroll-smooth">
         <Outlet />
       </div>
       
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-1 z-50">
+      <div className="fixed sm:absolute bottom-0 left-0 right-0 sm:left-auto sm:right-auto sm:w-full max-w-md mx-auto bg-white border-t border-gray-200 flex justify-around py-2 px-1 z-50 pb-safe">
         {navItems.map((item) => (
           <NavLink
             key={item.to}
