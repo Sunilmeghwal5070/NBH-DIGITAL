@@ -1,7 +1,10 @@
 import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Search, Smartphone, Sofa, Car, Bike } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ArrowLeft, Search, Smartphone, Sofa, Car, Bike, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useEffect, useState } from 'react';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 const categories = [
   { id: 'mobiles', label: 'Mobiles', icon: Smartphone, color: 'text-blue-500' },
@@ -10,17 +13,23 @@ const categories = [
   { id: 'bikes', label: 'Bikes', icon: Bike, color: 'text-green-500' }
 ];
 
-const items = [
-  { id: '1', title: 'OLAX1S', price: '₹ 60,000', seller: 'RAHUL SINGH RA...', time: '1 day ago', avatar: 'R', color: 'bg-orange-500', image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc' },
-  { id: '2', title: 'Activa 2012', price: '₹ 25,000', seller: 'Vaibhav', time: '4 days ago', avatar: 'V', color: 'bg-indigo-500', image: 'https://images.unsplash.com/photo-1620882313653-62bda5667104' },
-  { id: '3', title: 'Ktm rc200', price: '₹ 95,000', seller: 'Ayyan chippa', time: '1 week ago', avatar: 'A', color: 'bg-red-500', image: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87' },
-  { id: '4', title: 'Renault duster 2013 ...', price: '₹ 2,50,000', seller: 'Ayyan chippa', time: '1 week ago', avatar: 'A', color: 'bg-red-500', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf' },
-  { id: '5', title: 'TVs sports bike', price: '₹ 23,000', seller: 'Bhavesh Bareth', time: '2 weeks ago', avatar: 'B', color: 'bg-blue-500', image: 'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f' },
-  { id: '6', title: 'Vivo V60 12/256', price: '₹ 32,000', seller: 'Madan Bairwa', time: '2 weeks ago', avatar: 'M', color: 'bg-pink-500', image: 'https://images.unsplash.com/photo-1598327105666-5b89351cb31b' },
-];
-
 export default function ResalePage() {
   const { goBack, navigate } = useSafeNavigate();
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, 'resale') /*, orderBy('createdAt', 'desc')*/);
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const dbItems = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setItems(dbItems);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <motion.div 
@@ -77,37 +86,48 @@ export default function ResalePage() {
         <h3 className="font-bold text-xl text-gray-900 mb-6">Recently posted</h3>
 
         {/* Grid List */}
-        <div className="grid grid-cols-2 gap-4">
-           {items.map((item, i) => (
-              <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  viewport={{ once: true }}
-                  key={item.id} 
-                  className="flex flex-col cursor-pointer group bg-white border border-gray-100 rounded-2xl p-3 hover:shadow-md transition-shadow"
-              >
-                  <div className="w-full aspect-[4/5] overflow-hidden relative mb-3 rounded-xl bg-gray-100">
-                     <img src={item.image + "?auto=format&fit=crop&q=80&w=400"} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                     <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white font-bold text-sm px-3 py-1.5 rounded-lg">
-                        {item.price}
-                     </div>
-                  </div>
-                  <div>
-                     <h4 className="font-bold text-gray-900 text-sm mb-2 leading-tight line-clamp-1">{item.title}</h4>
-                     <div className="flex justify-between items-center">
-                        <div className="flex items-center">
-                           <div className={`w-6 h-6 flex items-center justify-center text-[10px] rounded-full font-bold text-white mr-2 ${item.color} flex-shrink-0`}>
-                              {item.avatar}
-                           </div>
-                           <span className="text-[10px] font-semibold text-gray-600 line-clamp-1 max-w-[60px]">{item.seller}</span>
-                        </div>
-                        <span className="text-[10px] font-medium text-gray-400 whitespace-nowrap">{item.time}</span>
-                     </div>
-                  </div>
-              </motion.div>
-           ))}
-        </div>
+        <AnimatePresence>
+          {loading ? (
+             <div className="flex justify-center p-12"><div className="w-8 h-8 rounded-full border-4 border-gray-200 border-t-purple-600 animate-spin"></div></div>
+          ) : items.length === 0 ? (
+             <div className="text-center p-12 bg-white rounded-3xl border border-gray-100">
+               <p className="text-gray-500 font-medium">No items available.</p>
+             </div>
+          ) : (
+             <div className="grid grid-cols-2 gap-4">
+                {items.map((item, i) => (
+                   <motion.div 
+                       initial={{ opacity: 0, y: 20 }}
+                       whileInView={{ opacity: 1, y: 0 }}
+                       transition={{ delay: (i % 4) * 0.05 }}
+                       viewport={{ once: true }}
+                       key={item.id} 
+                       className="flex flex-col cursor-pointer group bg-white border border-gray-100 rounded-2xl p-3 hover:shadow-md transition-shadow"
+                   >
+                       <div className="w-full aspect-[4/5] overflow-hidden relative mb-3 rounded-xl bg-gray-100 flex items-center justify-center">
+                          {item.images && item.images.length > 0 ? (
+                            <img src={item.images[0]} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          ) : (
+                            <Smartphone size={32} className="text-gray-300" />
+                          )}
+                          <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white font-bold text-sm px-3 py-1.5 rounded-lg">
+                             ₹{item.price}
+                          </div>
+                       </div>
+                       <div>
+                          <h4 className="font-bold text-gray-900 text-sm mb-2 leading-tight line-clamp-1">{item.title}</h4>
+                          <div className="flex justify-between items-center">
+                             <div className="flex items-center">
+                                <span className="text-xs font-semibold text-gray-600 line-clamp-1">{item.condition || 'Used'}</span>
+                             </div>
+                             <span className="text-[10px] font-medium text-gray-400 whitespace-nowrap">Just now</span>
+                          </div>
+                       </div>
+                   </motion.div>
+                ))}
+             </div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

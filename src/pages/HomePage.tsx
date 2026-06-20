@@ -12,7 +12,7 @@ export default function HomePage() {
        className="flex flex-col bg-gray-50 min-h-screen pb-10 font-sans"
     >
       {/* Header */}
-      <div className="bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <div className="bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center space-x-4">
           <div className="bg-blue-600 p-2.5 rounded-full flex items-center justify-center shadow-md shadow-blue-200">
             <User size={22} className="text-white" strokeWidth={2.5} />
@@ -23,11 +23,6 @@ export default function HomePage() {
           </div>
         </div>
         <div className="flex items-center space-x-3">
-          <Link to="/search">
-            <motion.div whileTap={{ scale: 0.9 }} className="bg-gray-100 p-2.5 rounded-full hover:bg-gray-200 transition-colors cursor-pointer">
-              <SearchIcon size={20} className="text-gray-700" strokeWidth={2} />
-            </motion.div>
-          </Link>
           <Link to="/notifications">
             <motion.div whileTap={{ scale: 0.9 }} className="relative bg-gray-100 p-2.5 rounded-full hover:bg-gray-200 transition-colors cursor-pointer">
                <Bell size={20} className="text-gray-700" strokeWidth={2} />
@@ -35,6 +30,16 @@ export default function HomePage() {
             </motion.div>
           </Link>
         </div>
+      </div>
+
+      {/* Global Search Bar */}
+      <div className="bg-white px-4 pb-4 rounded-b-3xl shadow-sm mb-2 z-10 transition-all">
+         <Link to="/search" className="block relative">
+             <motion.div whileTap={{ scale: 0.98 }} className="w-full bg-gray-50 border border-gray-100 py-3.5 pl-12 pr-4 text-sm rounded-2xl flex items-center text-gray-400">
+                <SearchIcon size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" strokeWidth={2} />
+                Search Nimbahera...
+             </motion.div>
+         </Link>
       </div>
 
       {/* Categories */}
@@ -45,7 +50,7 @@ export default function HomePage() {
       >
         {[
           { icon: <Store className="text-orange-500" size={24}/>, label: "Businesses", to: "/business" },
-          { icon: <Briefcase className="text-blue-500" size={24}/>, label: "Jobs", to: "#" },
+          { icon: <Briefcase className="text-blue-500" size={24}/>, label: "Jobs", to: "/jobs" },
           { icon: <Activity className="text-pink-500" size={24}/>, label: "Activities", to: "/activities" },
           { icon: <Calendar className="text-yellow-500" size={24}/>, label: "Events", to: "/events" },
           { icon: <Wrench className="text-indigo-500" size={24}/>, label: "Services", to: "/home-services" },

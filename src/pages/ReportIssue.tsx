@@ -1,5 +1,5 @@
 import { useSafeNavigate } from '../hooks/useSafeNavigate';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, MapPin, Camera, Mic, MapPinned } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -35,7 +35,7 @@ export default function ReportIssue() {
     }
   };
 
-  const handleImageCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageCapture = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const imgUrl = URL.createObjectURL(e.target.files[0]);
       if (images.length < 3) {

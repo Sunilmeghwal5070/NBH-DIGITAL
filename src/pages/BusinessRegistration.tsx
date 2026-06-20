@@ -1,5 +1,5 @@
 import { useSafeNavigate } from '../hooks/useSafeNavigate';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus, ChevronRight, MapPinned, Camera } from 'lucide-react';
 import { collection, addDoc } from 'firebase/firestore';
@@ -42,7 +42,7 @@ export default function BusinessRegistration() {
     }
   };
 
-  const handleImageCapture = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageCapture = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const imgUrl = URL.createObjectURL(e.target.files[0]);
       if (images.length < 3) {

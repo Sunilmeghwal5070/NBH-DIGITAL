@@ -22,6 +22,7 @@ import ProfilePage from './pages/ProfilePage';
 import UpdatesPage from './pages/UpdatesPage';
 import CreateResale from './pages/CreateResale';
 import SearchPage from './pages/SearchPage';
+import CreateNews from './pages/CreateNews';
 
 import NewsDetail from './pages/NewsDetail';
 import Discussions from './pages/Discussions';
@@ -44,6 +45,8 @@ import EventsPage from './pages/EventsPage';
 import RequestEvent from './pages/RequestEvent';
 import HomeServices from './pages/HomeServices';
 import NoInternetConnection from './pages/NoInternetConnection';
+import JobsPage from './pages/JobsPage';
+import JobDetail from './pages/JobDetail';
 
 import ListProperty from './pages/ListProperty';
 import AppBanner from './components/AppBanner';
@@ -78,11 +81,14 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
 
         {/* New Pages */}
+        <Route path="/updates/create" element={<CreateNews />} />
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/discussions" element={<Discussions />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/events/request" element={<RequestEvent />} />
         <Route path="/home-services" element={<HomeServices />} />
+        <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/jobs/:id" element={<JobDetail />} />
         <Route path="/offline" element={<NoInternetConnection />} />
         <Route path="/event/:id" element={<EventDetail />} />
         <Route path="/polls" element={<Polls />} />
