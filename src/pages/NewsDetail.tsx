@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Share2, MoreVertical } from 'lucide-react';
 import { motion } from 'motion/react';
+import ShareModal from '../components/ShareModal';
 
 export default function NewsDetail() {
   const navigate = useNavigate();
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -17,7 +20,7 @@ export default function NewsDetail() {
         console.error('Error sharing:', error);
       }
     } else {
-      alert('Your browser does not support the Web Share API.');
+      setShowShareModal(true);
     }
   };
 
@@ -64,6 +67,13 @@ export default function NewsDetail() {
          </div>
       </div>
 
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title="Nimbahera | हल्दीघाटी से फिर उठा राष्ट्र गौरव का संदेश" 
+        text="Check out this news on Digital Nimbahera!" 
+        url={window.location.href} 
+      />
     </motion.div>
   );
 }

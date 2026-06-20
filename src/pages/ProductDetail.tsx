@@ -3,11 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { marketData } from '../data/mockData';
 import { ArrowLeft, Share2, MapPin, MoreVertical, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import ShareModal from '../components/ShareModal';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   
   // Find product in marketData.products
   const product = marketData.products.find(p => p.id === id);
@@ -26,6 +28,8 @@ export default function ProductDetail() {
       } catch (error) {
         console.error('Error sharing:', error);
       }
+    } else {
+      setShowShareModal(true);
     }
   };
 
@@ -155,6 +159,13 @@ export default function ProductDetail() {
             </>
          )}
       </AnimatePresence>
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title="OLAX1S" 
+        text="Check out this product on Digital Nimbahera!" 
+        url={window.location.href} 
+      />
     </motion.div>
   );
 }

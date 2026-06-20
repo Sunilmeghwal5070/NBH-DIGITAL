@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { User, Bell, Shield, Settings, Share2, HelpCircle, LogOut, ChevronRight, Store, FileText, LogIn } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { auth } from '../lib/firebase';
 import { onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
+import ShareModal from '../components/ShareModal';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -39,7 +41,7 @@ export default function ProfilePage() {
         console.error('Error sharing:', error);
       }
     } else {
-      alert('Your browser does not support the Web Share API.');
+      setShowShareModal(true);
     }
   };
 
@@ -166,6 +168,14 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title="Digital Nimbahera" 
+        text="Join me on Digital Nimbahera! The heartbeat of our city." 
+        url={window.location.origin} 
+      />
     </motion.div>
   );
 }

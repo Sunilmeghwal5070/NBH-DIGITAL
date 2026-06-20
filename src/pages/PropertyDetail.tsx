@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Share2, MapPin, Ruler, Home, Box } from 'lucide-react';
 import { motion } from 'motion/react';
+import ShareModal from '../components/ShareModal';
 
 export default function PropertyDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -18,7 +21,7 @@ export default function PropertyDetail() {
         console.error('Error sharing:', error);
       }
     } else {
-      alert('Your browser does not support the Web Share API.');
+      setShowShareModal(true);
     }
   };
 
@@ -132,6 +135,14 @@ export default function PropertyDetail() {
             Contact
          </motion.button>
       </motion.div>
+
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title="2BHK For Rent" 
+        text="Check out this property on Digital Nimbahera!" 
+        url={window.location.href} 
+      />
     </motion.div>
   );
 }

@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Share2, MapPin, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
+import ShareModal from '../components/ShareModal';
 
 export default function EventDetail() {
   const navigate = useNavigate();
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -17,7 +20,7 @@ export default function EventDetail() {
         console.error('Error sharing:', error);
       }
     } else {
-      alert('Your browser does not support the Web Share API.');
+      setShowShareModal(true);
     }
   };
 
@@ -74,6 +77,14 @@ export default function EventDetail() {
             <span className="mr-2">📞</span> Contact Organizer
          </motion.button>
       </div>
+
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title="KEYCHAIN MAKING WORKSHOP" 
+        text="Check out this event on Digital Nimbahera!" 
+        url={window.location.href} 
+      />
     </motion.div>
   );
 }

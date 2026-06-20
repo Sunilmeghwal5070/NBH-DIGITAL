@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Share2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import ShareModal from '../components/ShareModal';
 
 export default function Polls() {
   const navigate = useNavigate();
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareData, setShareData] = useState({ title: '', text: '' });
 
   const handleShare = async (title: string, text: string) => {
     if (navigator.share) {
@@ -18,7 +21,8 @@ export default function Polls() {
         console.error('Error sharing:', error);
       }
     } else {
-      alert('Your browser does not support the Web Share API.');
+      setShareData({ title, text });
+      setShowShareModal(true);
     }
   };
 
@@ -131,6 +135,14 @@ export default function Polls() {
            </div>
          ))}
       </div>
+
+      <ShareModal 
+        isOpen={showShareModal} 
+        onClose={() => setShowShareModal(false)} 
+        title={shareData.title} 
+        text={shareData.text} 
+        url={window.location.href} 
+      />
     </motion.div>
   );
 }
