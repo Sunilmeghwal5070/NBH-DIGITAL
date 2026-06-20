@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, MapPin, Clock, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -30,7 +31,7 @@ const events = [
 ];
 
 export default function EventsPage() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div 
@@ -39,7 +40,7 @@ export default function EventsPage() {
       className="flex flex-col bg-white min-h-screen font-sans pb-24"
     >
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-20">
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 bg-gray-50 rounded-full hover:bg-gray-100 transition">
+        <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 bg-gray-50 rounded-full hover:bg-gray-100 transition">
           <ArrowLeft size={24} className="text-gray-900" />
         </motion.button>
         <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Events</h1>

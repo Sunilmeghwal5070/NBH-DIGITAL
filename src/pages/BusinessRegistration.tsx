@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus, ChevronRight } from 'lucide-react';
@@ -7,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { businessCategories } from '../data/mockData';
 
 export default function BusinessRegistration() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [formData, setFormData] = useState({
      name: '',
      description: '',
@@ -47,7 +48,7 @@ export default function BusinessRegistration() {
             <h1 className="text-xl font-bold text-gray-900 leading-tight">Become a Provider</h1>
             <p className="text-xs font-medium text-gray-500 mt-1">Grow your business</p>
          </div>
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition">
             <X size={18} className="text-gray-900" />
          </motion.button>
       </div>

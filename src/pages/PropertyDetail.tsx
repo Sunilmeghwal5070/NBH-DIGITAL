@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Share2, MapPin, Ruler, Home, Box } from 'lucide-react';
@@ -5,7 +6,7 @@ import { motion } from 'motion/react';
 import ShareModal from '../components/ShareModal';
 
 export default function PropertyDetail() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const { id } = useParams();
   const [showShareModal, setShowShareModal] = useState(false);
 
@@ -34,7 +35,7 @@ export default function PropertyDetail() {
     >
       {/* Header Over Image */}
       <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-10 pt-safe">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2.5 bg-white/80 backdrop-blur rounded-full hover:bg-white text-gray-900 shadow-sm transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2.5 bg-white/80 backdrop-blur rounded-full hover:bg-white text-gray-900 shadow-sm transition">
             <ArrowLeft size={20} />
          </motion.button>
          <motion.button onClick={handleShare} whileTap={{ scale: 0.9 }} className="p-2.5 bg-white/80 backdrop-blur rounded-full hover:bg-white text-gray-900 shadow-sm transition">

@@ -1,10 +1,11 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ArrowLeft, ArrowRight, Store } from 'lucide-react';
 import { businessCategories } from '../data/mockData';
 import { motion } from 'motion/react';
 
 export default function BusinessDirectory() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div 
@@ -16,7 +17,7 @@ export default function BusinessDirectory() {
       {/* Header */}
       <div className="bg-white px-4 py-4 flex justify-between items-center border-b border-gray-100 shadow-sm sticky top-0 z-10 pb-4">
          <div className="flex items-center">
-            <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition">
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition">
               <ArrowLeft size={24} className="text-gray-900" />
             </motion.button>
             <h1 className="text-xl font-bold text-gray-900 ml-2">Business Directory</h1>

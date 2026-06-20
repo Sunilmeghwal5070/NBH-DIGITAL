@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Search, Smartphone, Sofa, Car, Bike } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -19,7 +20,7 @@ const items = [
 ];
 
 export default function ResalePage() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div 
@@ -30,7 +31,7 @@ export default function ResalePage() {
     >
       {/* Header */}
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10 justify-between shadow-sm">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
             <ArrowLeft size={24} className="text-gray-800" />
          </motion.button>
          <h1 className="text-xl font-bold absolute left-1/2 -translate-x-1/2">Resale</h1>

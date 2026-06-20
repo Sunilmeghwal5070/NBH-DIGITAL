@@ -14,8 +14,8 @@ export const homeData = {
     totalVotes: 25
   },
   issues: [
-    { id: 1, title: "Gomukh kund me mari machliya", supporters: 6, affected: 4, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=400" },
-    { id: 2, title: "Dagla ka kheda near bhag", supporters: 4, affected: 1, image: "https://images.unsplash.com/photo-1517227495066-646738c82b9a?auto=format&fit=crop&q=80&w=400" }
+    { id: 1, title: "Gomukh kund me mari machliya", supporters: 6, affected: 4, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=400", status: "Active" },
+    { id: 2, title: "Dagla ka kheda near bhag", supporters: 4, affected: 1, image: "https://images.unsplash.com/photo-1517227495066-646738c82b9a?auto=format&fit=crop&q=80&w=400", status: "Active" }
   ],
   questions: [
     { id: 1, user: "Kamlesh kumhar", date: "6/12/2026", category: "General", initial: "K", content: "If there is any school looking for an English teacher for part time for class 9-12th . Cont...", answers: 2 },

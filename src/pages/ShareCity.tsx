@@ -1,14 +1,15 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { X } from 'lucide-react';
 
 export default function ShareCity() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col bg-white min-h-screen font-sans">
       <div className="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-20">
-        <motion.button onClick={() => navigate(-1)} className="text-[#4f46e5] font-bold">Cancel</motion.button>
+        <motion.button onClick={() => goBack()} className="text-[#4f46e5] font-bold">Cancel</motion.button>
         <h1 className="text-xl font-bold text-gray-900">Share with City</h1>
         <div className="w-10"></div>
       </div>

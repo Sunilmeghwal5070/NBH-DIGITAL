@@ -1,10 +1,11 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Discussions() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   const [discussions, setDiscussions] = useState([
     { id: 1, name: 'Kamlesh kumhar', date: '6/12/2026', text: 'If there is any school looking for an English teacher for part time for class 9-12th . Cont...', tag: 'General', replies: [{name: 'Vinod', text: 'Please contact Sunrise Academy.'}] },
@@ -33,7 +34,7 @@ export default function Discussions() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col bg-white min-h-screen font-sans">
       <div className="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-20">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -mr-2 bg-gray-50 rounded-full hover:bg-gray-100 transition absolute left-4">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -mr-2 bg-gray-50 rounded-full hover:bg-gray-100 transition absolute left-4">
            <ArrowLeft size={20} className="text-gray-900" />
          </motion.button>
          <h1 className="text-2xl font-bold text-gray-900 mx-auto">Discussions</h1>

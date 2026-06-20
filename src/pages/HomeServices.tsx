@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Zap, Droplets, Hammer, PaintRoller, AirVent, Pipette, Webcam, Sparkles, CarIcon, Truck, 
    Bike, Wrench, Shield, Home, Palette, HardHat, CarFront, Users, Droplet, MonitorIcon, Recycle, Star, Hand, HeartPulse, GraduationCap, Grid, Box } from 'lucide-react';
@@ -38,7 +39,7 @@ const homeServices = [
 ];
 
 export default function HomeServices() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div 
@@ -48,7 +49,7 @@ export default function HomeServices() {
       className="flex flex-col bg-white min-h-screen font-sans pb-24"
     >
       <div className="px-4 py-4 flex items-center justify-between sticky top-0 z-20 bg-white border-b border-gray-100">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
             <ArrowLeft size={24} className="text-gray-900" />
          </motion.button>
          <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Home Services</h1>

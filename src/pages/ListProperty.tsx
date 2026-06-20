@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus, MapPin, Video, Home as HomeIcon, Maximize, Compass, Map, Sofa } from 'lucide-react';
@@ -6,7 +7,7 @@ import { db } from '../lib/firebase';
 import { motion } from 'motion/react';
 
 export default function ListProperty() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [loading, setLoading] = useState(false);
 
   return (
@@ -17,7 +18,7 @@ export default function ListProperty() {
       className="flex flex-col bg-white min-h-screen text-gray-900 font-sans"
     >
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full transition">
             <X size={26} className="text-gray-900" />
          </motion.button>
          <h1 className="text-[22px] font-bold text-gray-900 ml-4">List Property</h1>

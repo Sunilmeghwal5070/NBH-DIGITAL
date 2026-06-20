@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Share2, MoreVertical } from 'lucide-react';
@@ -5,7 +6,7 @@ import { motion } from 'motion/react';
 import ShareModal from '../components/ShareModal';
 
 export default function NewsDetail() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [showShareModal, setShowShareModal] = useState(false);
 
   const handleShare = async () => {
@@ -28,7 +29,7 @@ export default function NewsDetail() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col bg-white min-h-screen font-sans">
       <div className="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-20">
          <div className="flex items-center">
-            <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 bg-gray-50 rounded-full hover:bg-gray-100 transition mr-4">
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 bg-gray-50 rounded-full hover:bg-gray-100 transition mr-4">
               <ArrowLeft size={20} className="text-gray-900" />
             </motion.button>
             <h1 className="text-xl font-bold text-gray-900">News</h1>

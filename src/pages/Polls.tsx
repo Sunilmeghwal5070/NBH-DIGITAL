@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Share2 } from 'lucide-react';
@@ -5,7 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import ShareModal from '../components/ShareModal';
 
 export default function Polls() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareData, setShareData] = useState({ title: '', text: '' });
 
@@ -79,7 +80,7 @@ export default function Polls() {
            <h1 className="text-2xl font-bold text-gray-900">Voice of Nimbahera</h1>
            <p className="text-gray-500 text-sm mt-0.5">Your opinion matters. Vote and see live results.</p>
         </div>
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -mr-2 bg-gray-50 rounded-full hover:bg-gray-100 transition absolute right-4 top-4">
+        <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -mr-2 bg-gray-50 rounded-full hover:bg-gray-100 transition absolute right-4 top-4">
           <ArrowLeft size={20} className="text-gray-900 rotate-180" />
         </motion.button>
       </div>

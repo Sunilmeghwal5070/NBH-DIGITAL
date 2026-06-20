@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Flame, Search } from 'lucide-react';
@@ -37,7 +38,7 @@ const offersData = [
 ];
 
 export default function OffersPage() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredOffers = selectedCategory === 'All' 
@@ -53,7 +54,7 @@ export default function OffersPage() {
     >
       {/* Header */}
       <div className="px-4 py-4 flex items-center bg-white shadow-sm sticky top-0 z-10 border-b border-gray-100 justify-between">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 flex-shrink-0 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 flex-shrink-0 transition">
             <ArrowLeft size={24} className="text-gray-900" />
          </motion.button>
          <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Deals & Offers</h1>

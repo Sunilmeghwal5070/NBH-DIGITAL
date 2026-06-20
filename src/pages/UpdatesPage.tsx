@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { Link, useNavigate } from 'react-router-dom';
 import { Play, ExternalLink, ArrowLeft, MoreVertical, Star, Edit } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -46,7 +47,7 @@ const newsItems = [
 ];
 
 export default function UpdatesPage() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div 
@@ -58,7 +59,7 @@ export default function UpdatesPage() {
       {/* Header */}
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10 justify-between border-b border-gray-100 shadow-sm">
          <div className="flex items-center space-x-2">
-           <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition lg:hidden">
+           <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition lg:hidden">
               <ArrowLeft size={24} className="text-gray-800" />
            </motion.button>
            <div>

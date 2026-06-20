@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -8,7 +9,7 @@ import { motion } from 'motion/react';
 const categories = ['Food', 'Shopping', 'Salon', 'Gym', 'Other'];
 
 export default function CreateOffer() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [title, setTitle] = useState('');
   const [businessName, setBusinessName] = useState('');
@@ -26,7 +27,7 @@ export default function CreateOffer() {
         category: selectedCategory,
         createdAt: new Date().toISOString()
       });
-      navigate(-1);
+      goBack();
     } catch (e) {
       console.error(e);
       setLoading(false);
@@ -42,7 +43,7 @@ export default function CreateOffer() {
     >
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center shadow-sm sticky top-0 z-20 border-b border-gray-100 justify-between">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 flex-shrink-0 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 flex-shrink-0 transition">
             <ArrowLeft size={24} className="text-gray-900" />
          </motion.button>
          <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Create Offer</h1>

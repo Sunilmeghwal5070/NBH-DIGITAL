@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Sparkles, Home, ShoppingCart, FileText } from 'lucide-react';
@@ -50,7 +51,7 @@ const propertiesData = [
 ];
 
 export default function PropertiesPage() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const filteredProperties = selectedCategory === 'all' 
@@ -66,7 +67,7 @@ export default function PropertiesPage() {
     >
       {/* Header */}
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10 justify-between shadow-sm border-b border-gray-100">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
             <ArrowLeft size={24} className="text-gray-900" />
          </motion.button>
          <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Properties</h1>

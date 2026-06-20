@@ -1,16 +1,17 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function AskCity() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
 
   return (
     <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col bg-white min-h-screen font-sans">
       <div className="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-20">
         <h1 className="text-2xl font-bold text-gray-900 mx-auto">Ask Your City</h1>
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="absolute right-4 p-2 rounded-full hover:bg-gray-100 transition">
+        <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="absolute right-4 p-2 rounded-full hover:bg-gray-100 transition">
           <X size={24} className="text-gray-900" />
         </motion.button>
       </div>

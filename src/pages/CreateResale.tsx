@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Plus, X } from 'lucide-react';
@@ -6,7 +7,7 @@ import { db } from '../lib/firebase';
 import { motion } from 'motion/react';
 
 export default function CreateResale() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('0');
   const [location, setLocation] = useState('');
@@ -26,7 +27,7 @@ export default function CreateResale() {
         category: selectedCategory,
         createdAt: new Date().toISOString()
       });
-      navigate(-1);
+      goBack();
     } catch (e) {
       console.error(e);
       setLoading(false);
@@ -41,7 +42,7 @@ export default function CreateResale() {
       className="flex flex-col bg-white min-h-screen text-gray-900 font-sans"
     >
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full transition">
             <X size={26} className="text-gray-900" />
          </motion.button>
          <div className="ml-2 flex flex-col justify-center">

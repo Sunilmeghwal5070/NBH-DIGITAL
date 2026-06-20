@@ -1,10 +1,11 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function ReportIssue() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [selectedCategory, setSelectedCategory] = useState('');
   const categories = ['Road', 'Water', 'Electricity', 'Garbage', 'Safety', 'Other'];
 
@@ -12,7 +13,7 @@ export default function ReportIssue() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col bg-white min-h-screen font-sans">
       <div className="bg-white px-4 py-4 flex items-center justify-between sticky top-0 z-20">
         <h1 className="text-2xl font-bold text-gray-900">Report Civic Issue</h1>
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -mr-2 rounded-full hover:bg-gray-100 transition">
+        <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -mr-2 rounded-full hover:bg-gray-100 transition">
           <ArrowLeft size={24} className="text-gray-900 rotate-180" /> {/* Simulate X icon, wait X icon is better */}
         </motion.button>
       </div>

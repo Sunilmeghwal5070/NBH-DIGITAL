@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { marketData } from '../data/mockData';
@@ -7,7 +8,7 @@ import ShareModal from '../components/ShareModal';
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [showModal, setShowModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   
@@ -42,7 +43,7 @@ export default function ProductDetail() {
     >
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center sticky top-0 z-20">
-        <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full bg-gray-50 flex items-center justify-center transition">
+        <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full bg-gray-50 flex items-center justify-center transition">
           <ArrowLeft size={20} className="text-gray-900" />
         </motion.button>
         <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Details</h1>

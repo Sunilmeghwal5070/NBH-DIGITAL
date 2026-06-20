@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { businesses, businessCategories } from '../data/mockData';
@@ -34,7 +35,7 @@ const homeServicesList = [
 
 export default function BusinessCategory() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [nearbyFilter, setNearbyFilter] = useState(false);
 
   const category = businessCategories.find(c => c.id === id);
@@ -50,7 +51,7 @@ export default function BusinessCategory() {
       >
         {/* Header */}
         <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10 justify-between shadow-sm">
-           <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
+           <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
               <ArrowLeft size={24} className="text-gray-800" />
            </motion.button>
            <h1 className="text-xl font-bold text-gray-900 absolute left-1/2 -translate-x-1/2">Home Services</h1>
@@ -102,7 +103,7 @@ export default function BusinessCategory() {
 
   // STANDARD CATEGORY LAYOUT
   const isElectrician = id === 'electrician';
-  let displayItems = isElectrician ? [
+  let displayItems: any[] = isElectrician ? [
     { id: 1, name: 'Mithu Lal', location: 'Electrician', rating: 5.0, reviews: 1, verified: true, isPerson: true, avatar: 'M', distance: 1.5 },
     { id: 2, name: 'Gourav Pandit', location: 'Electrician', rating: 5.0, reviews: 2, verified: true, isPerson: true, avatar: 'G', distance: 3.2 },
     { id: 3, name: 'Mateshwari electrical', location: 'Electrician', rating: 5.0, reviews: 2, verified: true, isPerson: false, image: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&q=80&w=400', distance: 0.8 },
@@ -124,7 +125,7 @@ export default function BusinessCategory() {
     >
       {/* Header */}
       <div className="px-4 py-4 flex items-center bg-white sticky top-0 z-10 justify-between shadow-sm">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-100 transition">
             <ArrowLeft size={24} className="text-gray-800" />
          </motion.button>
          <h1 className="text-xl font-bold text-gray-900 text-center flex-grow capitalize">{isElectrician ? 'Electrician' : category?.name || "Category"}</h1>

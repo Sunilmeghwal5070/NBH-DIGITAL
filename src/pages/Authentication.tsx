@@ -1,3 +1,4 @@
+import { useSafeNavigate } from '../hooks/useSafeNavigate';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -6,7 +7,7 @@ import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { motion } from 'motion/react';
 
 export default function Authentication() {
-  const navigate = useNavigate();
+  const { goBack, navigate } = useSafeNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -44,7 +45,7 @@ export default function Authentication() {
       <div className="absolute bottom-[-10%] left-[-10%] w-60 h-60 bg-green-100 rounded-full blur-3xl opacity-50"></div>
 
       <div className="px-4 py-4 flex items-center bg-transparent z-10 relative">
-         <motion.button whileTap={{ scale: 0.9 }} onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-200 transition">
+         <motion.button whileTap={{ scale: 0.9 }} onClick={() => goBack()} className="p-2 -ml-2 rounded-full hover:bg-gray-200 transition">
             <ArrowLeft size={24} className="text-gray-900" />
          </motion.button>
       </div>
