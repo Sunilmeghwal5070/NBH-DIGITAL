@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { auth, googleProvider } from '../lib/firebase';
-import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { signInWithRedirect, getRedirectResult, onAuthStateChanged } from 'firebase/auth';
 import { motion } from 'motion/react';
 
 export default function Authentication() {
@@ -11,6 +11,24 @@ export default function Authentication() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Check for redirect result when the component mounts
+    const checkRedirect = async () => {
+      try {
+        setLoading(true);
+        const result = await getRedirectResult(auth);
+        if (result) {
+          navigate('/home', { replace: true });
+        }
+      } catch (err: any) {
+        console.error("Redirect Error:", err);
+        setError(err.message || 'Failed to sign in with Google');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    checkRedirect();
+
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         navigate('/home', { replace: true });
@@ -23,12 +41,10 @@ export default function Authentication() {
     setError('');
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
-      navigate('/home');
+      await signInWithRedirect(auth, googleProvider);
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Failed to sign in with Google');
-    } finally {
+      setError(err.message || 'Failed to initialize Google sign in');
       setLoading(false);
     }
   };

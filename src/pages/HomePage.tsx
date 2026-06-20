@@ -39,22 +39,22 @@ export default function HomePage() {
 
       {/* Categories */}
       <motion.div 
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white py-6 px-4 flex overflow-x-auto space-x-6 hide-scrollbar shadow-sm mb-2"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-white py-6 px-4 grid grid-cols-5 gap-2 shadow-sm mb-2"
       >
         {[
-          { icon: <Store className="text-orange-500" size={26}/>, label: "Businesses", to: "/business" },
-          { icon: <Briefcase className="text-blue-500" size={26}/>, label: "Jobs", to: "#" },
-          { icon: <Activity className="text-pink-500" size={26}/>, label: "Activities", to: "/activities" },
-          { icon: <Calendar className="text-yellow-500" size={26}/>, label: "Events", to: "/events" },
-          { icon: <Wrench className="text-indigo-500" size={26}/>, label: "Services", to: "/home-services" },
+          { icon: <Store className="text-orange-500" size={24}/>, label: "Businesses", to: "/business" },
+          { icon: <Briefcase className="text-blue-500" size={24}/>, label: "Jobs", to: "#" },
+          { icon: <Activity className="text-pink-500" size={24}/>, label: "Activities", to: "/activities" },
+          { icon: <Calendar className="text-yellow-500" size={24}/>, label: "Events", to: "/events" },
+          { icon: <Wrench className="text-indigo-500" size={24}/>, label: "Services", to: "/home-services" },
         ].map((item, idx) => (
-          <Link key={idx} to={item.to} className="flex flex-col items-center space-y-2 min-w-[75px] group outline-none">
-            <motion.div whileTap={{ scale: 0.9 }} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 group-hover:bg-blue-50 transition-colors shadow-sm">
+          <Link key={idx} to={item.to} className="flex flex-col items-center group outline-none">
+            <motion.div whileTap={{ scale: 0.9 }} className="bg-gray-50 p-3 rounded-2xl border border-gray-100 group-hover:bg-blue-50 transition-colors shadow-sm mb-2 flex items-center justify-center aspect-square w-full max-w-[56px]">
               {item.icon}
             </motion.div>
-            <span className="text-[11px] font-bold tracking-wide text-gray-600">{item.label}</span>
+            <span className="text-[10px] font-bold tracking-wide text-gray-600 truncate w-full text-center">{item.label}</span>
           </Link>
         ))}
       </motion.div>
